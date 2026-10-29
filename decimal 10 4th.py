@@ -37,7 +37,10 @@ def main():
     start_time = time.time()
 
     while time.time() - start_time < duration:
-        result = virtual_hw.process_virtual_hardware(cycles=int(3e9))
+        # 修正(2026-10-29): cycles にサンプリングレート 3e9 をそのまま渡すと実ループで
+        # 約2時間かかり、1秒の収集ウィンドウに収まらなかった。戻り値は最終サイクルの
+        # 値のみで中間結果は破棄されるため、1回の処理が約0.2秒になるサイクル数にした
+        result = virtual_hw.process_virtual_hardware(cycles=100000)
         print(f"Processed Value: {result}")
 
 if __name__ == "__main__":
